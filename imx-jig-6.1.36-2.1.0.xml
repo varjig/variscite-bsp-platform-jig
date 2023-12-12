@@ -3,8 +3,8 @@
 <manifest>
   <remote name="varjig"   fetch="ssh://git@github.com/varjig/"/>
 
-  <include name="imx-6.1.1-1.0.1.xml" />
-  <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx-jig" remote="varjig" revision="0d1e7fa3071fc766a5e7ae818b4334e62c81d8a1" upstream="imx93-langdale-var01">
+  <include name="imx-6.1.36-2.1.0.xml" />
+  <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx-jig" remote="varjig" revision="001e19276f31c6939174d8c30896503ed74b02bf" upstream="imx93-mickledore-var02">
     <linkfile src="scripts/yocto/var-jig-setup-release.sh" dest="var-jig-setup-release.sh"/>
   </project>
 </manifest>
