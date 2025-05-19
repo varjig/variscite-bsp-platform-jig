@@ -11,21 +11,14 @@ $: chmod a+x ~/bin/repo
 
 Download the BSP source:
 
-<<<<<<< HEAD
-[source,console]
-=======
 [source,shell]
 ----
->>>>>>> 1eac5c1 (DART-MX95-JIG: Initial support added)
-$: PATH=${PATH}:~/bin
-$: mkdir ~/var-imx95-yocto-jig
-$: cd ~/var-imx95-yocto-jig
-$: repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b scarthgap -m default.xml
-$: repo sync -j$(nproc)
-<<<<<<< HEAD
-=======
+PATH=${PATH}:~/bin
+mkdir ~/var-imx95-yocto-jig
+cd ~/var-imx95-yocto-jig
+repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b scarthgap_MX95_6.6.52-2.2.0_var01 -m default.xml
+repo sync -j$(nproc)
 ----
->>>>>>> 1eac5c1 (DART-MX95-JIG: Initial support added)
 
 At the end of the commands you have every metadata you need to start work with.
 
@@ -33,8 +26,8 @@ To start a simple image build:
 
 [source,shell]
 ----
-$: MACHINE=imx95-var-dart-jig DISTRO=fsl-imx-xwayland . var-jig-setup-release.sh imx95_build_xwayland
-$: bitbake core-image-base imx-boot
+MACHINE=imx95-var-dart-jig DISTRO=fsl-imx-xwayland . var-jig-setup-release.sh imx95_build_xwayland
+bitbake core-image-base imx-boot
 ----
 
 You can use any directory to host your build.

@@ -4,7 +4,7 @@
   <remote name="varjig"   fetch="git@github.com:varjig"/>
 
   <include name="imx-6.6.52-2.2.0.xml" />
-  <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx-jig" remote="varjig" revision="080b19b3895c799e0f12cb9bcf02d7c1512110bd" upstream="RND-2796_MX95_Jig_Initial_Yocto_Release_Scarthgap_with_Test_Scripts"> 
+  <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx-jig" remote="varjig" revision="4d5661360766d77aeda55a9e815d6c49e379740e" upstream="mx95-scarthgap_6.6.52-2.2.0_var01">
     <linkfile src="scripts/yocto/var-jig-setup-release.sh" dest="var-jig-setup-release.sh"/>
   </project>
 </manifest>
