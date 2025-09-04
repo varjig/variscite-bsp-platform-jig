@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <manifest>
-  <remote name="varjig"   fetch="ssh://git@github.com/varjig"/>
+  <remote name="varjig"   fetch="git@github.com:varjig"/>
 
   <include name="imx-6.6.52-2.2.0.xml" />
   <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx-jig" remote="varjig" revision="RND-2796_MX95_Jig_Initial_Yocto_Release_Scarthgap_with_Test_Scripts"> 

@@ -11,12 +11,21 @@ $: chmod a+x ~/bin/repo
 
 Download the BSP source:
 
+<<<<<<< HEAD
 [source,console]
+=======
+[source,shell]
+----
+>>>>>>> 1eac5c1 (DART-MX95-JIG: Initial support added)
 $: PATH=${PATH}:~/bin
 $: mkdir ~/var-imx95-yocto-jig
 $: cd ~/var-imx95-yocto-jig
 $: repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b scarthgap -m default.xml
 $: repo sync -j$(nproc)
+<<<<<<< HEAD
+=======
+----
+>>>>>>> 1eac5c1 (DART-MX95-JIG: Initial support added)
 
 At the end of the commands you have every metadata you need to start work with.
 
