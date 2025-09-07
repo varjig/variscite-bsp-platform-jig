@@ -1,0 +1,35 @@
+= Variscite BSP Platform
+
+To get the BSP you need to have `repo` installed and use it as:
+
+Install the `repo` utility:
+
+[source,console]
+$: mkdir ~/bin
+$: curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+$: chmod a+x ~/bin/repo
+
+Download the BSP source:
+
+[source,shell]
+----
+PATH=${PATH}:~/bin
+mkdir ~/var-imx95-yocto-jig
+cd ~/var-imx95-yocto-jig
+repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b walnascar_MX95_6.12.20-2.0.0_var01 -m default.xml
+repo sync -j$(nproc)
+----
+
+At the end of the commands you have every metadata you need to start work with.
+
+To start a simple image build:
+
+[source,shell]
+----
+MACHINE=imx95-var-dart-jig DISTRO=fsl-imx-xwayland . var-jig-setup-release.sh imx95_build_xwayland
+bitbake core-image-base imx-boot
+----
+
+You can use any directory to host your build.
+
+The source code is checked out at `~/var-imx95-yocto-jig/sources`.
