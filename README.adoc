@@ -15,7 +15,7 @@ Download the BSP source:
 $: PATH=${PATH}:~/bin
 $: mkdir ~/var-fslc-yocto
 $: cd ~/var-fslc-yocto
-$: repo init -u https://github.com/varigit/variscite-bsp-platform -b scarthgap -m default.xml
+$: repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b scarthgap_MX91_6.6.52-2.2.0_var01 -m default.xml
 $: repo sync -j4
 
 At the end of the commands you have every metadata you need to start work with.
@@ -23,9 +23,23 @@ At the end of the commands you have every metadata you need to start work with.
 To start a simple image build:
 
 [source,console]
-$: MACHINE=<machine> DISTRO=<distro> source ./var-setup-release.sh <build directory>
-$: bitbake core-image-base
+$: MACHINE=imx91-var-som-jig DISTRO=fsl-imx-xwayland source ./var-jig-setup-release.sh imx91_build_xwayland
+$: bitbake core-image-base imx-boot
 
 You can use any directory to host your build.
 
 The source code is checked out at `var-fslc-yocto/sources`.
+
+To create jig SD card image run (as sudo):
+==========================
+[source,shell]
+----
+~/var-imx91-yocto-jig/sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-sdcard.sh
+----
+
+The image can then be programmed to the card as follows:
+[source,shell]
+----
+sudo umount $(mount | grep sdX | awk '{print $3}')
+zcat iMX91_JIG-SD-*.img.gz | sudo dd of=/dev/sdX bs=1M conv=fsync
+----
