@@ -1,0 +1,131 @@
+= Variscite BSP Platform Jig
+
+This manifest downloads the Variscite i.MX95 Yocto BSP together with the
+`meta-variscite-imx-jig` layer.
+
+The commands below use `~/var-imx95-yocto-jig` as the BSP directory. A different
+directory can be used if needed.
+
+== GitHub SSH Access
+
+The jig layer is fetched from the `varjig` GitHub organization by SSH. If your
+GitHub account does not already have an SSH key configured, create one and add
+it to GitHub before running `repo sync`.
+
+[source,shell]
+----
+ssh-keygen -t ed25519 -C "<user.name>@variscite.com"
+cat ~/.ssh/id_ed25519.pub
+----
+
+Add the public key printed by the previous command at:
+
+https://github.com/settings/keys
+
+== Install Repo
+
+Install the `repo` utility if it is not already available:
+
+[source,console]
+----
+mkdir -p ~/bin
+curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+chmod a+x ~/bin/repo
+export PATH="${PATH}:$HOME/bin"
+----
+
+== Download the BSP Source
+
+[source,shell]
+----
+mkdir ~/var-imx95-yocto-jig && cd ~/var-imx95-yocto-jig
+repo init -u https://github.com/varjig/variscite-bsp-platform-jig -b walnascar_MX95_6.12.49-2.2.0_var01 -m default.xml
+repo sync -j$(nproc)
+----
+
+After `repo sync` completes, the source code is available under:
+
+[source,shell]
+----
+~/var-imx95-yocto-jig/sources
+----
+
+== Build an Image
+
+Initialize the Yocto build environment:
+
+[source,shell]
+----
+cd ~/var-imx95-yocto-jig
+MACHINE=imx95-var-dart-jig DISTRO=fsl-imx-xwayland . var-jig-setup-release.sh imx95_build_xwayland
+----
+
+=== Configure DRAM Size
+
+For now, the DRAM size is selected at compile time with a machine override:
+
+* `dram-size-2g`: 2 GB DRAM
+* `dram-size-4g`: 4 GB DRAM
+* `dram-size-8g`: 8 GB DRAM
+* `dram-size-16g`: 16 GB DRAM
+
+For example, to build for a DART-MX95 with 8 GB DRAM:
+
+[source,shell]
+----
+echo 'MACHINEOVERRIDES .= ":dram-size-8g"' >> conf/local.conf
+----
+
+If no DRAM-size override is set, the build defaults to 8 GB DRAM.
+
+=== Configure the build directory and start the build:
+
+[source,shell]
+----
+touch conf/sanity.conf
+sed -i 's#DL_DIR ?= "${BSPDIR}/downloads#DL_DIR = "/opt/yocto_downloads#g' conf/local.conf
+bitbake core-image-base imx-boot
+----
+
+== Rebuild Images After a Change
+
+[source,shell]
+----
+bitbake -c cleanall core-image-base virtual/bootloader imx-oei imx-boot
+bitbake core-image-base imx-boot
+----
+
+== SD Card Images and Updates
+
+=== Create Jig SD Card Image
+
+The `imx95-var-dart-jig` machine uses `wic/var-jig-sdimage-2part.wks.in` to
+create the SD card image during `bitbake core-image-base`.
+
+The WIC image keeps the legacy SD card layout:
+
+* `imx-boot` raw boot container at 32 KiB, outside the partition table
+* partition 1: `rootfs`, ext4, starts at 64 MiB, with 400 MiB extra space
+* partition 2: `JIG-SCRIPTS`, ext4, with 100 MiB extra space
+
+The `JIG-SCRIPTS` partition is populated from `scripts/jig_scripts` and includes
+`version.txt` with the `meta-variscite-imx-jig` commit ID. The WIC rootfs also
+includes `sd_w61x_mfg_v1.bin.se`, matching the old SD-card script.
+
+The generated image is available under:
+
+[source,shell]
+----
+tmp/deploy/images/imx95-var-dart-jig/
+----
+
+Replace `/dev/sdX` with the target SD card device. The following command
+overwrites the selected device:
+
+[source,shell]
+----
+sudo umount /dev/sdX?* 2>/dev/null || true
+cd ~/var-imx95-yocto-jig/imx95_build_xwayland/tmp/deploy/images/imx95-var-dart-jig
+zstdcat iMX95_JIG-SD-*.rootfs.wic.zst | sudo dd of=/dev/sdX bs=4M conv=fsync status=progress
+sync
+----
