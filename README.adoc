@@ -13,21 +13,21 @@ Download the BSP source:
 
 [source,console]
 $ PATH=${PATH}:~/bin
-$ mkdir ~/var-fsl-yocto
-$ cd ~/var-fsl-yocto
-$ repo init -u https://github.com/varigit/variscite-bsp-platform.git -b fsl-zeus
-$ repo sync -j4
+$ mkdir ~/var-fsl-yocto-mx8mp-jig
+$ cd ~/var-fsl-yocto-mx8mp-jig
+$ repo init -u https://github.com/varjig/variscite-bsp-platform-jig.git -b zeus_MX8MP_5.4.70-2.3.2_var01 -m default.xml
+$ repo sync -j$(nproc)
 
 At the end of the commands you have every metadata you need to start work with.
 
 To start a simple image build:
 
 [source,console]
-$ MACHINE=<machine> DISTRO=<distro> source ./var-setup-release.sh -b <build directory>
+$ MACHINE=imx8mp-var-dart DISTRO=fsl-imx-xwayland . var-jig-setup-release.sh -b imx8mp_build_xwayland
 $ bitbake core-image-base
 
 You can use any directory to host your build.
 
-The source code is checked out at `var-fsl-yocto/sources`.
+The source code is checked out into: `~/var-fsl-yocto-mx8mp-jig/sources/`.
 
 For further info go to http://variwiki.com

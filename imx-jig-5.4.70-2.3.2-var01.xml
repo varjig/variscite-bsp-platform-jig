@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<manifest>
+  <remote name="varjig"   fetch="ssh://git@github.com/varjig/"/>
+
+  <include name="imx-5.4.70-2.3.2-var01.xml" />
+  <project name="meta-variscite-imx-jig" path="sources/meta-variscite-imx" remote="varjig" revision="ad12d41c5f51f1b34054e2ab6b189f4eaec82495" upstream="dev_imx8mp-zeus_5.4.70-2.3.0_var01" sync-c="true">
+    <linkfile src="scripts/var-setup-release.sh" dest="var-jig-setup-release.sh"/>
+  </project>
+</manifest>
